@@ -1,10 +1,53 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3416/3416021.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Faz Consulting | Cotação USD</title>
   <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+    footer {
+      background-color: var(--nav-bg);
+      padding: 50px 20px 30px;
+      margin-top: auto;
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+    }
+
+    .footer-section h3 {
+      color: var(--gold);
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
+
+    .footer-section p, .footer-section a {
+      margin: 12px 0;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .footer-section a:hover {
+      color: var(--gold);
+    }
+
+    .copyright {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
     :root {
@@ -263,5 +306,28 @@
 
     buscarCotacaoDolar();
   </script>
+<footer>
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>Contato</h3>
+      <p>📱 (1) 786 706-7550</p>
+      <p>📧 operacional@fazconsulting.com.br</p>
+    </div>
+    <div class="footer-section">
+      <h3>Endereço</h3>
+      <p>Av Dr. Nilo Peçanha, 2900</p>
+      <p>Porto Alegre - RS</p>
+    </div>
+    <div class="footer-section">
+      <h3>Redes Sociais</h3>
+      <p><a href="https://www.instagram.com/fazcapital/">Instagram</a></p>
+      <p><a href="https://www.linkedin.com/company/faz-capital/">LinkedIn</a></p>
+    </div>
+  </div>
+  <div class="copyright">
+    © 2025 Faz Consulting. Todos os direitos reservados.
+  </div>
+</footer>
+
 </body>
 </html>
