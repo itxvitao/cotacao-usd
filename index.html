@@ -44,20 +44,6 @@
       flex-direction: column;
     }
 
-    .theme-switch {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: var(--surface);
-      border: 2px solid var(--gold);
-      color: var(--text);
-      padding: 12px;
-      border-radius: 50%;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      z-index: 1000;
-    }
-
     nav {
       background-color: var(--nav-bg);
       padding: 15px 40px;
@@ -68,12 +54,6 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-    }
-
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 15px;
     }
 
     .logo-container img {
@@ -89,6 +69,22 @@
       color: var(--text);
       text-decoration: none;
       font-weight: 500;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--gold);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
     }
 
     .container {
@@ -144,46 +140,20 @@
       border-radius: 12px;
       cursor: pointer;
       font-size: 1rem;
-      margin-right: 10px;
     }
 
-    footer {
-      background-color: var(--nav-bg);
-      padding: 50px 20px 30px;
-      margin-top: auto;
-      text-align: center;
-    }
-
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 40px;
-    }
-
-    .footer-section h3 {
-      color: var(--gold);
-      margin-bottom: 20px;
-      font-size: 1.2rem;
-    }
-
-    .footer-section p, .footer-section a {
-      margin: 12px 0;
-      color: var(--text-secondary);
-      text-decoration: none;
-    }
-
-    .footer-section a:hover {
-      color: var(--gold);
-    }
-
-    .copyright {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-      color: var(--text-secondary);
-      font-size: 0.9rem;
+    .theme-switch {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--surface);
+      border: 2px solid var(--gold);
+      color: var(--text);
+      padding: 12px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 1000;
     }
   </style>
 </head>
@@ -206,15 +176,15 @@
     </div>
 
     <label for="usd">Valor em USD:</label>
-    <input type="number" id="usd" placeholder="Ex: 3000" />
+    <input type="number" id="usd" placeholder="Ex: 3000">
 
     <label for="spread">Spread (multiplicador):</label>
-    <input type="number" id="spread" value="1.02" step="0.01" />
+    <input type="number" id="spread" value="1.02" step="0.01">
 
     <label for="tarifa">Tarifa (USD):</label>
-    <input type="number" id="tarifa" value="20" />
+    <input type="number" id="tarifa" value="20">
 
-    <div class="resultado" id="resultado"></div>
+    <div class="resultado" id="resultado">Cotação atual do dólar: R$ --</div>
 
     <div style="margin-top: 30px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
       <button onclick="calcularTotal()">Calcular</button>
@@ -224,31 +194,9 @@
 
   <button class="theme-switch" onclick="toggleTheme()">🌓</button>
 
-  <footer>
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>Contato</h3>
-        <p>📱 (1) 786 706-7550</p>
-        <p>📧 operacional@fazconsulting.com.br</p>
-      </div>
-      <div class="footer-section">
-        <h3>Endereço</h3>
-        <p>Av Dr. Nilo Peçanha, 2900</p>
-        <p>Porto Alegre - RS</p>
-      </div>
-      <div class="footer-section">
-        <h3>Redes Sociais</h3>
-        <p><a href="https://www.instagram.com/fazcapital/">Instagram</a></p>
-        <p><a href="https://www.linkedin.com/company/faz-capital/">LinkedIn</a></p>
-      </div>
-    </div>
-    <div class="copyright">
-      © 2025 Faz Consulting. Todos os direitos reservados.
-    </div>
-  </footer>
-
   <script>
     let resultadoGlobal = "";
+    let cotacao = 0;
 
     function toggleTheme() {
       const body = document.documentElement;
@@ -264,13 +212,10 @@
     }
 
     async function buscarCotacaoDolar() {
-      const resposta = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL', {
-        headers: {
-          'x-api-key': '39ad9888a7d929bb3c07fc0d27e8f4d14a0f5c965ed59f27fdf57635910a276d'
-        }
-      });
+      const resposta = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL');
       const dados = await resposta.json();
-      return parseFloat(dados.USDBRL.bid);
+      cotacao = parseFloat(dados.USDBRL.bid);
+      document.getElementById("resultado").innerText = "Cotação atual do dólar: R$ " + cotacao.toFixed(5);
     }
 
     function formatar(valor) {
@@ -278,42 +223,45 @@
     }
 
     async function calcularTotal() {
-  const usd = parseFloat(document.getElementById("usd").value);
-  const spread = parseFloat(document.getElementById("spread").value);
-  const tarifaUsd = parseFloat(document.getElementById("tarifa").value);
+      const usd = parseFloat(document.getElementById("usd").value);
+      const spread = parseFloat(document.getElementById("spread").value);
+      const tarifaUsd = parseFloat(document.getElementById("tarifa").value);
 
-  if (isNaN(usd) || usd <= 0) {
-    alert("Digite um valor válido em USD.");
-    return;
-  }
+      if (isNaN(usd) || usd <= 0) {
+        alert("Digite um valor válido em USD.");
+        return;
+      }
 
-  const cotacao = await buscarCotacaoDolar();
-  const taxa = cotacao * spread;
-  const valorEmReais = usd * taxa;
-  const iof = valorEmReais * 0.0038;
-  const tarifaReais = tarifaUsd * taxa;
-  const total = valorEmReais + iof + tarifaReais;
+      const taxa = cotacao * spread;
+      const valorEmReais = usd * taxa;
+      const iof = valorEmReais * 0.0038;
+      const tarifaReais = tarifaUsd * taxa;
+      const total = valorEmReais + iof + tarifaReais;
 
-  resultadoGlobal = `*Valor em USD:* $${usd}\n*Taxa:* ${formatar(taxa)}\n*IOF (0,38%):* ${formatar(iof)}\n*Tarifa:* ${formatar(tarifaReais)}\n*TOTAL:* ${formatar(total)}`;
+      const taxaFormatada = taxa.toFixed(5);
 
-  document.getElementById("resultado").innerHTML = `
-    <div><strong>Valor em USD:</strong> $${usd}</div>
-    <div><strong>Taxa:</strong> ${formatar(taxa)}</div>
-    <div><strong>IOF (0,38%):</strong> ${formatar(iof)}</div>
-    <div><strong>Tarifa:</strong> ${formatar(tarifaReais)}</div>
-    <div><strong>TOTAL:</strong> <span style="color: var(--gold); font-size: 1.2em;">${formatar(total)}</span></div>
-  `;
-}
+      resultadoGlobal = `*Valor em USD:* $${usd}\n*Taxa:* R$ ${taxaFormatada}\n*IOF (0,38%):* ${formatar(iof)}\n*Tarifa:* ${formatar(tarifaReais)}\n*TOTAL:* ${formatar(total)}`;
 
-function enviarWhatsApp() {
-  if (!resultadoGlobal) {
-    alert("Calcule primeiro para enviar a mensagem.");
-    return;
-  }
-  const mensagem = encodeURIComponent("*Cotação Dólar - Faz Consulting*\n\n" + resultadoGlobal);
-  const link = `https://wa.me/?text=${mensagem}`;
-  window.open(link, "_blank");
-}
+      document.getElementById("resultado").innerHTML = `
+        <div><strong>Valor em USD:</strong> $${usd}</div>
+        <div><strong>Taxa:</strong> R$ ${taxaFormatada}</div>
+        <div><strong>IOF (0,38%):</strong> ${formatar(iof)}</div>
+        <div><strong>Tarifa:</strong> ${formatar(tarifaReais)}</div>
+        <div><strong>TOTAL:</strong> <span style="color: var(--gold); font-size: 1.2em;">${formatar(total)}</span></div>
+      `;
+    }
+
+    function enviarWhatsApp() {
+      if (!resultadoGlobal) {
+        alert("Calcule primeiro para enviar a mensagem.");
+        return;
+      }
+      const mensagem = encodeURIComponent("*Cotação Dólar - Faz Consulting*\n\n" + resultadoGlobal);
+      const link = `https://wa.me/?text=${mensagem}`;
+      window.open(link, "_blank");
+    }
+
+    buscarCotacaoDolar();
   </script>
 </body>
 </html>
