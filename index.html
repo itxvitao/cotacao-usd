@@ -8,7 +8,6 @@
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
     :root {
-      /* Dark theme (default) */
       --gold: #F5C332;
       --background: #0F0F0F;
       --surface: #1A1A1A;
@@ -79,8 +78,6 @@
 
     .logo-container img {
       height: 40px;
-      opacity: 0;
-      animation: fadeSlideIn 0.8s ease forwards;
       filter: var(--theme-filter);
     }
 
@@ -88,45 +85,10 @@
       filter: invert(1);
     }
 
-    .nav-links {
-      display: flex;
-      gap: 40px;
-    }
-
     .nav-links a {
       color: var(--text);
       text-decoration: none;
       font-weight: 500;
-      position: relative;
-      padding: 5px 0;
-      opacity: 0;
-      animation: fadeSlideIn 0.8s ease forwards;
-    }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background-color: var(--gold);
-      transition: width 0.3s ease;
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    @keyframes fadeSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .container {
@@ -136,19 +98,6 @@
       padding: 40px;
       border-radius: 24px;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-      opacity: 0;
-      animation: containerFadeIn 1s ease 0.3s forwards;
-    }
-
-    @keyframes containerFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .disclaimer {
@@ -158,16 +107,6 @@
       margin: 25px 0;
       font-size: 0.9rem;
       border-left: 4px solid var(--gold);
-      transform: translateX(-10px);
-      opacity: 0;
-      animation: slideIn 0.8s ease 0.6s forwards;
-    }
-
-    @keyframes slideIn {
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
     }
 
     label {
@@ -186,13 +125,6 @@
       border-radius: 12px;
       margin-bottom: 20px;
       font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: var(--gold);
-      box-shadow: 0 0 15px rgba(245, 195, 50, 0.1);
     }
 
     .resultado {
@@ -201,16 +133,6 @@
       border-left: 5px solid var(--gold);
       border-radius: 12px;
       margin-top: 20px;
-      transform: scale(0.98);
-      opacity: 0;
-      animation: resultFadeIn 0.5s ease forwards;
-    }
-
-    @keyframes resultFadeIn {
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
     }
 
     button {
@@ -223,26 +145,6 @@
       cursor: pointer;
       font-size: 1rem;
       margin-right: 10px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    button::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background-color: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: width 0.6s ease, height 0.6s ease;
-    }
-
-    button:hover::before {
-      width: 300px;
-      height: 300px;
     }
 
     footer {
@@ -260,45 +162,16 @@
       gap: 40px;
     }
 
-    .footer-section {
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards;
-    }
-
-    .footer-section:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-
-    .footer-section:nth-child(3) {
-      animation-delay: 0.4s;
-    }
-
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
     .footer-section h3 {
       color: var(--gold);
       margin-bottom: 20px;
       font-size: 1.2rem;
     }
 
-    .footer-section p {
+    .footer-section p, .footer-section a {
       margin: 12px 0;
       color: var(--text-secondary);
-    }
-
-    .footer-section a {
-      color: var(--text-secondary);
       text-decoration: none;
-      transition: color 0.3s ease;
     }
 
     .footer-section a:hover {
@@ -335,13 +208,16 @@
     <label for="usd">Valor em USD:</label>
     <input type="number" id="usd" placeholder="Ex: 3000" />
 
+    <label for="spread">Spread (multiplicador):</label>
+    <input type="number" id="spread" value="1.02" step="0.01" />
+
     <label for="tarifa">Tarifa (USD):</label>
-    <input type="number" id="tarifa" value="0" />
+    <input type="number" id="tarifa" value="20" />
 
     <div class="resultado" id="resultado"></div>
 
     <div style="margin-top: 30px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
-      <button onclick="calcular()">Calcular</button>
+      <button onclick="calcularTotal()">Calcular</button>
       <button onclick="enviarWhatsApp()">Enviar via WhatsApp</button>
     </div>
   </div>
@@ -382,61 +258,62 @@
       localStorage.setItem('theme', newTheme);
     }
 
-    // Check for saved theme preference
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       document.documentElement.setAttribute('data-theme', savedTheme);
     }
 
-    async function buscarCotacao() {
-      const res = await fetch("https://economia.awesomeapi.com.br/json/last/USD-BRL");
-      const data = await res.json();
-      return parseFloat(data.USDBRL.bid);
+    async function buscarCotacaoDolar() {
+      const resposta = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL', {
+        headers: {
+          'x-api-key': '39ad9888a7d929bb3c07fc0d27e8f4d14a0f5c965ed59f27fdf57635910a276d'
+        }
+      });
+      const dados = await resposta.json();
+      return parseFloat(dados.USDBRL.bid);
     }
 
     function formatar(valor) {
       return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
     }
 
-    async function calcular() {
-      const usd = parseFloat(document.getElementById("usd").value);
-      const tarifaUSD = parseFloat(document.getElementById("tarifa").value);
+    async function calcularTotal() {
+  const usd = parseFloat(document.getElementById("usd").value);
+  const spread = parseFloat(document.getElementById("spread").value);
+  const tarifaUsd = parseFloat(document.getElementById("tarifa").value);
 
-      if (isNaN(usd) || usd <= 0) {
-        alert("Digite um valor válido em USD.");
-        return;
-      }
+  if (isNaN(usd) || usd <= 0) {
+    alert("Digite um valor válido em USD.");
+    return;
+  }
 
-      const cotacao = await buscarCotacao();
-      const margem = 1.01;
-      const taxa = cotacao * margem;
+  const cotacao = await buscarCotacaoDolar();
+  const taxa = cotacao * spread;
+  const valorEmReais = usd * taxa;
+  const iof = valorEmReais * 0.0038;
+  const tarifaReais = tarifaUsd * taxa;
+  const total = valorEmReais + iof + tarifaReais;
 
-      const valorConvertido = usd * taxa;
-      const iof = valorConvertido * 0.0038;
-      const tarifaBRL = tarifaUSD * taxa;
-      const total = valorConvertido + iof + tarifaBRL;
+  resultadoGlobal = `*Valor em USD:* $${usd}\n*Taxa:* ${formatar(taxa)}\n*IOF (0,38%):* ${formatar(iof)}\n*Tarifa:* ${formatar(tarifaReais)}\n*TOTAL:* ${formatar(total)}`;
 
-      resultadoGlobal = `Valor em USD: $${usd}\nCotação: ${formatar(cotacao)}\nTaxa c/ margem: ${formatar(taxa)}\nValor BRL: ${formatar(valorConvertido)}\nIOF (0,38%): ${formatar(iof)}\nTarifa: ${formatar(tarifaBRL)}\nTOTAL: ${formatar(total)}`;
+  document.getElementById("resultado").innerHTML = `
+    <div><strong>Valor em USD:</strong> $${usd}</div>
+    <div><strong>Taxa:</strong> ${formatar(taxa)}</div>
+    <div><strong>IOF (0,38%):</strong> ${formatar(iof)}</div>
+    <div><strong>Tarifa:</strong> ${formatar(tarifaReais)}</div>
+    <div><strong>TOTAL:</strong> <span style="color: var(--gold); font-size: 1.2em;">${formatar(total)}</span></div>
+  `;
+}
 
-      document.getElementById("resultado").innerHTML = `
-        <div><strong>Cotação base:</strong> ${formatar(cotacao)}</div>
-        <div><strong>Taxa aplicada (com margem):</strong> ${formatar(taxa)}</div>
-        <div><strong>Valor convertido:</strong> ${formatar(valorConvertido)}</div>
-        <div><strong>IOF (0,38%):</strong> ${formatar(iof)}</div>
-        <div><strong>Tarifa (R$):</strong> ${formatar(tarifaBRL)}</div>
-        <div><strong>Total:</strong> <span style="color: var(--gold); font-size: 1.2em;">${formatar(total)}</span></div>
-      `;
-    }
-
-    function enviarWhatsApp() {
-      if (!resultadoGlobal) {
-        alert("Calcule primeiro para enviar a mensagem.");
-        return;
-      }
-      const mensagem = encodeURIComponent("*Cotação Dólar - Faz Consulting*\n\n" + resultadoGlobal);
-      const link = `https://wa.me/?text=${mensagem}`;
-      window.open(link, "_blank");
-    }
+function enviarWhatsApp() {
+  if (!resultadoGlobal) {
+    alert("Calcule primeiro para enviar a mensagem.");
+    return;
+  }
+  const mensagem = encodeURIComponent("*Cotação Dólar - Faz Consulting*\n\n" + resultadoGlobal);
+  const link = `https://wa.me/?text=${mensagem}`;
+  window.open(link, "_blank");
+}
   </script>
 </body>
 </html>
