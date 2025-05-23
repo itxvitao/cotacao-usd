@@ -283,12 +283,12 @@
 
       const taxaFormatada = taxa.toFixed(5);
 
-      resultadoGlobal = `*Valor em USD:* $${usd}\n*Taxa:* R$ ${taxaFormatada}\n*IOF (3,5%):* ${formatar(iof)}\n*Tarifa:* ${formatar(tarifaReais)}\n*TOTAL:* ${formatar(total)}`;
+      resultadoGlobal = `*Valor em USD:* $${usd}\n*Taxa:* R$ ${taxaFormatada}\n*IOF (1,1%):* ${formatar(iof)}\n*Tarifa:* ${formatar(tarifaReais)}\n*TOTAL:* ${formatar(total)}`;
 
       document.getElementById("resultado").innerHTML = `
         <div><strong>Valor em USD:</strong> $${usd}</div>
         <div><strong>Taxa:</strong> R$ ${taxaFormatada}</div>
-        <div><strong>IOF (3,5%):</strong> ${formatar(iof)}</div>
+        <div><strong>IOF (1,1%):</strong> ${formatar(iof)}</div>
         <div><strong>Tarifa:</strong> ${formatar(tarifaReais)}</div>
         <div><strong>TOTAL:</strong> <span style="color: var(--gold); font-size: 1.2em;">${formatar(total)}</span></div>
       `;
