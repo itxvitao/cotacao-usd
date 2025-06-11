@@ -283,10 +283,14 @@
 
       const taxaFormatada = taxa.toFixed(5);
 
+<<<<<<< HEAD
       const hoje = new Date();
       const dataFormatada = hoje.toLocaleDateString("pt-BR");
 
       resultadoGlobal = `💵 Cotação Dólar - Faz Consulting\nData: ${dataFormatada}\n\nValor em USD: US$ ${usd.toLocaleString("pt-BR", {minimumFractionDigits: 2})}\nCotação utilizada: R$ ${taxaFormatada}\nIOF (1,1%): ${formatar(iof)}\nTarifa bancária: ${formatar(tarifaReais)}\n\n✅ Total em BRL: ${formatar(total)}\n\n_Cotação válida até no máximo às 17h de hoje_`;
+=======
+      resultadoGlobal = `*Valor em USD:* $${usd}\n*Taxa:* R$ ${taxaFormatada}\n*IOF (1,1%):* ${formatar(iof)}\n*Tarifa:* ${formatar(tarifaReais)}\n*TOTAL:* ${formatar(total)}`;
+>>>>>>> 34ac486006eb749ee6f7be0ed2bd6ad49e82c530
 
       document.getElementById("resultado").innerHTML = `
         <div><strong>💵 Cotação Dólar - Faz Consulting</strong></div>
