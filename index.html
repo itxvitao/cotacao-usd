@@ -269,7 +269,6 @@
       const usd = parseFloat(document.getElementById("usd").value);
       const spread = parseFloat(document.getElementById("spread").value);
       const tarifaUsd = parseFloat(document.getElementById("tarifa").value) || 0;
-;
 
       if (isNaN(usd) || usd <= 0) {
         alert("Digite um valor válido em USD.");
@@ -284,14 +283,23 @@
 
       const taxaFormatada = taxa.toFixed(5);
 
-      resultadoGlobal = `*Valor em USD:* $${usd}\n*Taxa:* R$ ${taxaFormatada}\n*IOF (1,1%):* ${formatar(iof)}\n*Tarifa:* ${formatar(tarifaReais)}\n*TOTAL:* ${formatar(total)}`;
+      const hoje = new Date();
+      const dataFormatada = hoje.toLocaleDateString("pt-BR");
+
+      resultadoGlobal = `💵 Cotação Dólar - Faz Consulting\nData: ${dataFormatada}\n\nValor em USD: US$ ${usd.toLocaleString("pt-BR", {minimumFractionDigits: 2})}\nCotação utilizada: R$ ${taxaFormatada}\nIOF (1,1%): ${formatar(iof)}\nTarifa bancária: ${formatar(tarifaReais)}\n\n✅ Total em BRL: ${formatar(total)}\n\n_Cotação válida até no máximo às 17h de hoje_`;
 
       document.getElementById("resultado").innerHTML = `
-        <div><strong>Valor em USD:</strong> $${usd}</div>
+        <div><strong>💵 Cotação Dólar - Faz Consulting</strong></div>
+        <div><strong>Data:</strong> ${dataFormatada}</div>
+        <br>
+        <div><strong>Valor em USD:</strong> US$ ${usd.toLocaleString("pt-BR", {minimumFractionDigits: 2})}</div>
         <div><strong>Taxa:</strong> R$ ${taxaFormatada}</div>
         <div><strong>IOF (1,1%):</strong> ${formatar(iof)}</div>
         <div><strong>Tarifa:</strong> ${formatar(tarifaReais)}</div>
-        <div><strong>TOTAL:</strong> <span style="color: var(--gold); font-size: 1.2em;">${formatar(total)}</span></div>
+        <br>
+        <div><strong style="color: var(--gold); font-size: 1.2em;">✅ Total: ${formatar(total)}</strong></div>
+        <br>
+        <div style="font-style: italic;">📌 Para realizarmos a operação, é necessário o envio do comprovante de pagamento.</div>
       `;
     }
 
