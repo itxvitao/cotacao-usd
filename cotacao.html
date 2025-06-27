@@ -280,7 +280,7 @@
 
       const taxa = cotacao * spread;
       const valorEmReais = usd * taxa;
-      const iof = valorEmReais * 0.011;
+      const iof = valorEmReais * 0.0038;
       const tarifaReais = tarifaUsd * taxa;
       const total = valorEmReais + iof + tarifaReais;
       const taxaFormatada = taxa.toFixed(5);
@@ -289,7 +289,7 @@
       const dataFormatada = agora.toLocaleDateString("pt-BR");
       const horaFormatada = agora.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' });
 
-      resultadoGlobal = `💵 Cotação Dólar - Faz Consulting\nData: ${dataFormatada} - ${horaFormatada}\n\nValor em USD: US$ ${usd.toLocaleString("pt-BR", {minimumFractionDigits: 2})}\nCotação utilizada: R$ ${taxaFormatada}\nIOF (1,1%): ${formatar(iof)}\nTarifa bancária: ${formatar(tarifaReais)}\n\n✅ Total em BRL: ${formatar(total)}\n\n📌 Para realizarmos a operação, é necessário o envio do comprovante de pagamento.`;
+      resultadoGlobal = `💵 Cotação Dólar - Faz Consulting\nData: ${dataFormatada} - ${horaFormatada}\n\nValor em USD: US$ ${usd.toLocaleString("pt-BR", {minimumFractionDigits: 2})}\nCotação utilizada: R$ ${taxaFormatada}\nIOF (0,38%): ${formatar(iof)}\nTarifa bancária: ${formatar(tarifaReais)}\n\n✅ Total em BRL: ${formatar(total)}\n\n📌 Para realizarmos a operação, é necessário o envio do comprovante de pagamento.`;
 
       document.getElementById("resultado").innerHTML = `
         <div><strong>💵 Cotação Dólar - Faz Consulting</strong></div>
@@ -297,7 +297,7 @@
         <br>
         <div><strong>Valor em USD:</strong> US$ ${usd.toLocaleString("pt-BR", {minimumFractionDigits: 2})}</div>
         <div><strong>Cotação utilizada:</strong> R$ ${taxaFormatada}</div>
-        <div><strong>IOF (1,1%):</strong> ${formatar(iof)}</div>
+        <div><strong>IOF (0.38%):</strong> ${formatar(iof)}</div>
         <div><strong>Tarifa:</strong> ${formatar(tarifaReais)}</div>
         <br>
         <div><strong style="color: var(--gold); font-size: 1.2em;">✅ Total: ${formatar(total)}</strong></div>
