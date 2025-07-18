@@ -289,7 +289,7 @@
       const dataFormatada = agora.toLocaleDateString("pt-BR");
       const horaFormatada = agora.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' });
 
-      resultadoGlobal = `💵 Cotação Dólar - Faz Consulting\nData: ${dataFormatada} - ${horaFormatada}\n\nValor em USD: US$ ${usd.toLocaleString("pt-BR", {minimumFractionDigits: 2})}\nCotação utilizada: R$ ${taxaFormatada}\nIOF (0,38%): ${formatar(iof)}\nTarifa bancária: ${formatar(tarifaReais)}\n\n✅ Total em BRL: ${formatar(total)}\n\n📌 Para realizarmos a operação, é necessário o envio do comprovante de pagamento.`;
+      resultadoGlobal = `💵 Cotação Dólar - Faz Consulting\nData: ${dataFormatada} - ${horaFormatada}\n\nValor em USD: US$ ${usd.toLocaleString("pt-BR", {minimumFractionDigits: 2})}\nCotação utilizada: R$ ${taxaFormatada}\nIOF (1,1%): ${formatar(iof)}\nTarifa bancária: ${formatar(tarifaReais)}\n\n✅ Total em BRL: ${formatar(total)}\n\n📌 Para realizarmos a operação, é necessário o envio do comprovante de pagamento.`;
 
       document.getElementById("resultado").innerHTML = `
         <div><strong>💵 Cotação Dólar - Faz Consulting</strong></div>
